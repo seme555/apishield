@@ -160,3 +160,20 @@ cython_debug/
 #.idea/
 
  
+# Compiled python modules.
+*.pyc
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+/*.egg
+.vscode
+.coverage
+.pytest_cache
+.pypirc
+
+.venv
+
+.ruff_cache/
