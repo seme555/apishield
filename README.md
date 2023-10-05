@@ -16,3 +16,21 @@ A professional, scalable, and production-ready template for backend applications
 ## Why Choose This Template?
 
 - **Performance and Scalability**: Asynchronous processing and robust database integration handle high-traffic applications effortlessly.
+- **Ease of Development**: Dockerized setup ensures consistency across development, testing, and production environments.
+- **Enhanced Reliability**: Comprehensive testing with Pytest reduces bugs and ensures code stability.
+- **Modern Architecture**: Adheres to contemporary software development best practices, supporting scalability and maintainability.
+
+## Use Cases
+
+- **API-Driven Applications**: Build RESTful APIs with FastAPI and PostgreSQL.
+- **Microservices**: Create scalable and containerized microservices with Docker.
+- **Data-Intensive Systems**: Handle high-concurrency data processing with async operations.
+- **Task Automation**: Monitor and manage workflows for background tasks using Celery and Flower.
+
+## Getting Started
+
+### Prerequisites
+
+- Install [Docker](https://www.docker.com/).
+- Install [Pipenv](https://pipenv.pypa.io/en/latest/).
+
