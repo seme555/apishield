@@ -34,3 +34,21 @@ A professional, scalable, and production-ready template for backend applications
 - Install [Docker](https://www.docker.com/).
 - Install [Pipenv](https://pipenv.pypa.io/en/latest/).
 
+### Installation
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/seme555/apishield.git
+    cd apishield
+    ```
+
+2. Set up the virtual environment:
+
+    ```bash
+    export PIPENV_VENV_IN_PROJECT=1
+    pipenv shell
+    ```
+
+3. Install dependencies:
+
