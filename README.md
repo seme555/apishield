@@ -52,3 +52,21 @@ A professional, scalable, and production-ready template for backend applications
 
 3. Install dependencies:
 
+    ```bash
+    make install
+    ```
+
+### Running the Application
+
+1. Build Docker images:
+
+    ```bash
+    make build
+    ```
+
+2. Apply migrations:
+
+    ```bash
+    make makemigrations
+    make migrate
+    ```
