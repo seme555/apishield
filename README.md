@@ -70,3 +70,21 @@ A professional, scalable, and production-ready template for backend applications
     make makemigrations
     make migrate
     ```
+
+3. Start the application:
+
+    ```bash
+    make run
+    ```
+
+Access the application at `http://localhost:8000`.
+
+### Additional Services
+
+- **PgAdmin4**: Manage your PostgreSQL database at `http://localhost:5050`.
+- **Flower**: Workflow monitoring at `http://localhost:5556`.
+
+## Testing
+
+Run tests using Pytest:
+
