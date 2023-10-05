@@ -106,3 +106,10 @@ Contributions are welcome! Please follow the guidelines below:
 3. Commit your changes.
 4. Submit a pull request.
 
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Start building your next scalable backend application with ease and confidence using this ApiShield.
