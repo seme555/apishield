@@ -16,3 +16,7 @@ RUN ls -lha
 
 WORKDIR /demoapp/
 COPY . .
+
+ENV PYTHONPATH=/demoapp
+# RUN chmod +x /demoapp/start.sh
+# CMD ["./start.sh"]
