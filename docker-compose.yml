@@ -106,3 +106,7 @@ services:
       - web
       - redis
       - worker
+
+volumes:
+  db:
+  test-db:
