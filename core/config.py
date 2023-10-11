@@ -16,3 +16,21 @@ class Settings(BaseSettings):
     APP_ENV: str = os.environ['APP_ENV']
 
     # Base URL
+    BASE_URL: str = os.getenv('BASE_URL')
+
+    # DB
+    DATABASE_URL: Optional[str] = os.environ['DATABASE_URL']
+    TEST_DATABASE_URL: Optional[str] = os.environ['TEST_DATABASE_URL']
+
+    # JWT
+    JWT_SECRET_KEY: str = os.environ['JWT_SECRET_KEY']
+    ALGORITHM: ClassVar = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
+
+    # Rollbar
+    ROLLBAR_ACCESS_TOKEN: str = os.environ['ROLLBAR_ACCESS_TOKEN']
+
+    # GCS
+    BUCKET_NAME: str = os.environ['BUCKET_NAME']
+
