@@ -16,3 +16,13 @@ os.makedirs(os.path.join(BASE_DIR, 'core/logs'), exist_ok=True)
 if not os.path.isfile(LOG_FILENAME_INFO):
     with open(LOG_FILENAME_INFO, 'w') as log_file:
         log_file.write("Log file created\n")
+
+stream_handler = logging.StreamHandler(sys.stdout)
+file_handler = logging.FileHandler(LOG_FILENAME_INFO)
+
+stream_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+logger.handlers = [stream_handler, file_handler]
+
+logger.setLevel(logging.INFO)
