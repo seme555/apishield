@@ -52,3 +52,4 @@ class Settings(BaseSettings):
     INVITATION_URL_MAX_AGE: int = os.getenv('INVITATION_URL_MAX_AGE')
 
 
+settings = Settings()
