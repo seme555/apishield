@@ -34,3 +34,21 @@ class Settings(BaseSettings):
     # GCS
     BUCKET_NAME: str = os.environ['BUCKET_NAME']
 
+    # client credentials
+    OAUTH_CLIENT_ID: str = os.environ['OAUTH_CLIENT_ID']
+    OAUTH_CLIENT_SECRET: str = os.environ['OAUTH_CLIENT_SECRET']
+
+    # send mail credentials
+    MAIL_USERNAME: str = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD: str = os.getenv('MAIL_PASSWORD')
+    MAIL_FROM: str = os.getenv('MAIL_FROM')
+    MAIL_PORT: int = int(os.getenv('MAIL_PORT'))
+    MAIL_SERVER: str = os.getenv('MAIL_SERVER')
+    MAIL_FROM_NAME: str = os.getenv('MAIN_FROM_NAME')
+
+    # invitations
+    INVITATION_URL_SECRET_KEY: str = os.getenv('INVITATION_URL_SECRET_KEY')
+    INVITATION_URL_SECURITY_PASSWORD_SALT: str = os.getenv('INVITATION_URL_SECURITY_PASSWORD_SALT')
+    INVITATION_URL_MAX_AGE: int = os.getenv('INVITATION_URL_MAX_AGE')
+
+
