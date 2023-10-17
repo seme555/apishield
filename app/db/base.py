@@ -16,3 +16,7 @@ SessionLocal = sessionmaker(
 
 def get_db():  # Dependency to get database session
     database = SessionLocal()
+    try:
+        yield database
+    finally:
+        database.close()
