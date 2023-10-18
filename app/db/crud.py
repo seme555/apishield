@@ -34,3 +34,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         Args:
             db: Database session
+            id: Primary key value
+
+        Returns:
+            Model instance or None if not found
+        """
+        return db.query(self.model).filter(self.model.id == id).first()
+
+    def get_by_field(self, db: Session, field: str, value: Any) -> Optional[ModelType]:
+        """
+        Retrieve a single record by field value.
+
+        Args:
+            db: Database session
+            field: Field name to filter by
+            value: Value to match
+
+        Returns:
+            Model instance or None if not found
