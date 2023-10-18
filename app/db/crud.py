@@ -88,3 +88,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             .filter(getattr(self.model, field) == value)
             .offset(skip)
             .limit(limit)
+            .all()
+        )
+
+    def get_multi(
+        self, db: Session, *, skip: int = 0, limit: int = 100
+    ) -> List[ModelType]:
+        """
+        Retrieve multiple records with pagination.
+
+        Args:
+            db: Database session
+            skip: Number of records to skip
+            limit: Maximum number of records to return
+
+        Returns:
+            List of model instances
+        """
+        return db.query(self.model).offset(skip).limit(limit).all()
