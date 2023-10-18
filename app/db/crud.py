@@ -124,3 +124,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def update(
+        self,
+        db: Session,
+        *,
+        db_obj: ModelType,
+        obj_in: Union[UpdateSchemaType, Dict[str, Any]],
+    ) -> ModelType:
+        """
+        Update an existing record in the database.
+
+        Args:
+            db: Database session
+            db_obj: Database object to update
+            obj_in: Pydantic schema or dict with updated data
+
+        Returns:
+            Updated model instance
