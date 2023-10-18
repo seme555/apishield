@@ -106,3 +106,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             List of model instances
         """
         return db.query(self.model).offset(skip).limit(limit).all()
+
+    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
+        """
+        Create a new record in the database.
+
+        Args:
+            db: Database session
+            obj_in: Pydantic schema with creation data
+
+        Returns:
+            Created model instance
+        """
+        obj_in_data = jsonable_encoder(obj_in)
+        db_obj = self.model(**obj_in_data)
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
