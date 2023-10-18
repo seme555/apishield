@@ -52,3 +52,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         Returns:
             Model instance or None if not found
+
+        Raises:
+            AttributeError: If field doesn't exist on model
+        """
+        if not hasattr(self.model, field):
+            raise AttributeError(f"Model {self.model.__name__} has no field '{field}'")
+
+        return db.query(self.model).filter(getattr(self.model, field) == value).first()
+
+    def get_multi_by_field(
+        self, db: Session, field: str, value: Any, *, skip: int = 0, limit: int = 100
+    ) -> List[ModelType]:
+        """
+        Retrieve multiple records by field value.
+
+        Args:
+            db: Database session
+            field: Field name to filter by
