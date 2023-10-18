@@ -70,3 +70,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         Args:
             db: Database session
             field: Field name to filter by
+            value: Value to match
+            skip: Number of records to skip
+            limit: Maximum number of records to return
+
+        Returns:
+            List of model instances
+
+        Raises:
+            AttributeError: If field doesn't exist on model
+        """
+        if not hasattr(self.model, field):
+            raise AttributeError(f"Model {self.model.__name__} has no field '{field}'")
+
+        return (
+            db.query(self.model)
+            .filter(getattr(self.model, field) == value)
+            .offset(skip)
+            .limit(limit)
