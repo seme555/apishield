@@ -178,3 +178,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             ValueError: If record not found
         """
         obj = db.query(self.model).filter(self.model.id == id).first()
+        if not obj:
+            raise ValueError(f"Record with id {id} not found")
+
+        db.delete(obj)
+        db.commit()
+        return obj
