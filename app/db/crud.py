@@ -160,3 +160,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         db.add(db_obj)
         db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def remove(self, db: Session, *, id: int) -> ModelType:
+        """
+        Delete a record from the database.
+
+        Args:
+            db: Database session
+            id: Primary key of record to delete
+
+        Returns:
+            Deleted model instance
+
+        Raises:
+            ValueError: If record not found
+        """
+        obj = db.query(self.model).filter(self.model.id == id).first()
