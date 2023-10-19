@@ -142,3 +142,21 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         Returns:
             Updated model instance
+        """
+        # Convert input to dictionary
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = jsonable_encoder(obj_in, exclude_unset=True)
+
+        # Update fields that exist in input
+        for field, value in update_data.items():
+            if hasattr(db_obj, field):
+                setattr(db_obj, field, value)
+
+        # Update timestamp if model has updated_at field
+        if hasattr(db_obj, "updated_at"):
+            db_obj.updated_at = datetime.utcnow()
+
+        db.add(db_obj)
+        db.commit()
