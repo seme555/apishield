@@ -16,3 +16,6 @@ class Blog(Base):
     author = Column(UUID(as_uuid=True), ForeignKey('users.id'), index=True)
     body = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    user = relationship('User', back_populates='blogs')
