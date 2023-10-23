@@ -16,3 +16,10 @@ class User(Base):
     organization_name = Column(String(256), nullable=False)
     organizational_role = Column(String(256), nullable=True)
     role = Column(String(256), nullable=False)
+    password = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    invited_by_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=True)
+
+    blogs = relationship('Blog', back_populates='user')
+    invitations = relationship('Invitation', back_populates='created_by')
