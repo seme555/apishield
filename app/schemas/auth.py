@@ -16,3 +16,21 @@ class LoginResponse(BaseModel):
 
 class Token(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+    access_token: str
+    refresh_token: str
+
+
+class TokenPayload(BaseModel):
+    sub: str = None
+    exp: int = None
+
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
+    full_name: Optional[str] = None
+    role: Optional[str] = None
+    organization_name: Optional[str] = None
+
+
+class ClientTokenResponse(BaseModel):
+    access_token: str
