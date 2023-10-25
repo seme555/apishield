@@ -34,3 +34,4 @@ class TokenData(BaseModel):
 
 class ClientTokenResponse(BaseModel):
     access_token: str
+    token_type: str
