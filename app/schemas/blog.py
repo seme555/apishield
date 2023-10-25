@@ -34,3 +34,15 @@ class BlogCreate(BaseModel):
 
 
 class BlogDetails(AppBaseModel, BlogCreate, BlogId):
+    class Config:
+        from_attributes = True
+
+
+class BlogUpdate(BlogId):
+    title: Optional[str]
+    sub_title: Optional[str]
+    body: Optional[str]
+
+    class Config:
+        extra = 'forbid'
+        from_attributes = True
