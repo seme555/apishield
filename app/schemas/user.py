@@ -34,3 +34,21 @@ class UserCreate(BaseModel):
     full_name: str
     password: str
     organization_name: str
+    organizational_role: str = Optional
+    role: str
+    invited_by_id: UUID4 | None = Optional
+
+    class Config:
+        extra = 'forbid'
+        from_attributes = True
+
+
+class UserCreatewithID(BaseModel):
+    id: UUID4
+    email: EmailStr
+    full_name: str
+    password: str
+    organization_name: str
+    organizational_role: str = Optional
+    role: str
+    invited_by_id: UUID4 | None = Optional
