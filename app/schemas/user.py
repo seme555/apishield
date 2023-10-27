@@ -16,3 +16,21 @@ class UserBasic(BaseModel):
 
 class UserId(BaseModel):
     id: UUID4
+
+
+class UserCreateRequest(BaseModel):
+    full_name: str
+    password: str
+    confirm_password: str
+    token: str
+
+    class Config:
+        extra = 'forbid'
+        from_attributes = True
+
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    full_name: str
+    password: str
+    organization_name: str
