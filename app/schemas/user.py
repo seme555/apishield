@@ -52,3 +52,21 @@ class UserCreatewithID(BaseModel):
     organizational_role: str = Optional
     role: str
     invited_by_id: UUID4 | None = Optional
+
+    class Config:
+        extra = 'forbid'
+        from_attributes = True
+
+
+class UserDetails(AppBaseModel, UserBasic, UserId):
+    role: str
+    invited_by_id: UUID4 = Optional
+
+    class Config:
+        from_attributes = True
+
+
+class UserUpdate(UserId):
+    email: Optional[EmailStr]
+    password: Optional[str]
+    full_name: Optional[str]
