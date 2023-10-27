@@ -70,3 +70,16 @@ class UserUpdate(UserId):
     email: Optional[EmailStr]
     password: Optional[str]
     full_name: Optional[str]
+    bio: Optional[str]
+
+    class Config:
+        extra = 'forbid'
+        from_attributes = True
+
+
+class UserList(BaseModel):
+    email: EmailStr
+    full_name: str
+
+    class Config:
+        from_attributes = True
