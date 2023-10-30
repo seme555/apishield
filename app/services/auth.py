@@ -52,3 +52,21 @@ def authenticate(db: Session, *, email: Optional[str] = None, password: str):
         return None
     return user
 
+
+def get_token(token: str = Cookie(None, alias="authorization")):
+    if token is None:
+        raise HTTPException(status_code=403, detail="Forbidden: Missing token")
+    return token
+
+
+def get_current_active_user(token: str = Depends(get_token), db: Session = Depends(get_db)):
+    try:
+        if token is None:
+            raise HTTPException(status_code=403, detail="Missing authorization token")
+        payload = jwt.decode(
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
+        token_data = TokenPayload(**payload)
+        if datetime.fromtimestamp(token_data.exp) < datetime.now():
+            raise HTTPException(
+                status_code = status.HTTP_403_FORBIDDEN,
