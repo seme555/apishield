@@ -34,3 +34,21 @@ oauth2_scheme = OAuth2ClientCredentials(
     scopes={"write": "write_path"}
 )
 
+def validate_client_credentials(client_id, client_secret, scopes):
+    scopes_dict = {
+        scopes.split('/')[0] : scopes.split('/')[1]
+    }
+    if client_id == settings.OAUTH_CLIENT_ID and client_secret == settings.OAUTH_CLIENT_SECRET and scopes_dict == oauth2_scheme.model.flows.clientCredentials.scopes:
+        return True
+    else:
+        return False
+
+
+def authenticate(db: Session, *, email: Optional[str] = None, password: str):
+    user = userCrud.get_by_field(db, field="email", value=email)
+    if not user:
+        return None
+    if not verify_password(password, user.password):
+        return None
+    return user
+
