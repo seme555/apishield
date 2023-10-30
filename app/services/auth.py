@@ -16,3 +16,21 @@ from app.services.oauth_client import OAuth2ClientCredentials
 from app.utils.security import verify_password
 
 
+# logger = logging.getLogger(__name__)
+userCrud = CRUDBase(model=models.User)
+
+credentials_exception = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Could not validate credentials",
+)
+
+reuseable_oauth = OAuth2PasswordBearer(
+    tokenUrl="/login",
+    scheme_name="JWT"
+)
+
+oauth2_scheme = OAuth2ClientCredentials(
+    tokenUrl="token", 
+    scopes={"write": "write_path"}
+)
+
