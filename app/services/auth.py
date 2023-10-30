@@ -70,3 +70,21 @@ def get_current_active_user(token: str = Depends(get_token), db: Session = Depen
         if datetime.fromtimestamp(token_data.exp) < datetime.now():
             raise HTTPException(
                 status_code = status.HTTP_403_FORBIDDEN,
+                detail="Token expired",
+            )
+        user: Union[dict[str, Any], None] = userCrud.get_by_field(db, field="email", value=token_data.sub)
+        user: Union[dict[str, Any], None] = userCrud.get_by_field(db, field="id", value=token_data.sub)
+        if user is None:
+            raise credentials_exception
+        return user
+    except Exception as e:
+        logger.error(f"User not authenticated {e}")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='User not authenticated')
+
+
+def validate_client_credentials(client_id, client_secret, scopes):
+    scopes_dict = {
+        scopes.split('/')[0] : scopes.split('/')[1]
+    }
+    if client_id == settings.OAUTH_CLIENT_ID and client_secret == settings.OAUTH_CLIENT_SECRET and scopes_dict == oauth2_scheme.model.flows.clientCredentials.scopes:
+        return True
