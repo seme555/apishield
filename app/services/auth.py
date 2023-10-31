@@ -88,3 +88,5 @@ def validate_client_credentials(client_id, client_secret, scopes):
     }
     if client_id == settings.OAUTH_CLIENT_ID and client_secret == settings.OAUTH_CLIENT_SECRET and scopes_dict == oauth2_scheme.model.flows.clientCredentials.scopes:
         return True
+    else:
+        return False
