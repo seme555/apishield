@@ -34,3 +34,21 @@ def get_subject_from_token(token: str =  Header(alias='Authorization')):#, secre
     try:
         payload = jwt.decode(token, settings.OAUTH_CLIENT_SECRET, algorithms=["HS256"])
         sub = payload["sub"]
+        # token_data = TokenPayload(**payload)
+        return sub
+    except JWTError as e:
+        raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail=str(e))
+
+
+class OAuth2ClientCredentialsRequestForm:
+    def __init__(
+        self,
+        grant_type: str = 'client_credentials', #Form(None, regex="^(client_credentials)$"),
+        scope: str = Form(""),
+        client_id: Optional[str] = Form(None),
+        client_secret: Optional[str] = Form(None),
+    ):
+        self.grant_type = grant_type
+        self.scopes = scope.split()
+        self.client_id = client_id
+        self.client_secret = client_secret
