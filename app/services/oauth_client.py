@@ -52,3 +52,21 @@ class OAuth2ClientCredentialsRequestForm:
         self.scopes = scope.split()
         self.client_id = client_id
         self.client_secret = client_secret
+
+
+class OAuth2ClientCredentials(OAuth2):
+    def __init__(
+        self,
+        tokenUrl: str,
+        scheme_name: Optional[str] = None,
+        scopes: Optional[Dict[str, str]] = None,
+    ):
+        if not scopes:
+            scopes = {}
+        flows = OAuthFlowsModel(
+            clientCredentials={"tokenUrl": tokenUrl, "scopes": scopes}
+        )
+        super().__init__(flows=flows, scheme_name=scheme_name, auto_error=True)
+
+    async def __call__(self, request: Request) -> Optional[str]:
+        authorization: str = request.headers.get("Authorization")
