@@ -70,3 +70,14 @@ class OAuth2ClientCredentials(OAuth2):
 
     async def __call__(self, request: Request) -> Optional[str]:
         authorization: str = request.headers.get("Authorization")
+        scheme_param = get_authorization_scheme_param(authorization)
+        scheme: str = scheme_param[0]
+        param: str = scheme_param[1]
+
+        if not authorization or scheme.lower() != "bearer":
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED,
+                detail="Not authenticated",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return param
