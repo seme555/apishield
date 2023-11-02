@@ -16,3 +16,21 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/oauth-login")
 
 
 def get_current_user(
+    data: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    ret = token.verify_token(data, credentials_exception, db)
+    return ret
+
+
+def get_current_user_authorization(
+    req: Request,
+    db: Session = Depends(get_db),
+    current_user: schemas.TokenData = Depends(get_current_user),
+):
+    # enforcer = casbin.Enforcer("core/model.conf", adapter)
