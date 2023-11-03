@@ -16,3 +16,19 @@ def create_access_token(data: dict):
     encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
+
+def verify_token(
+        token: str,
+        credentials_exception,
+        db: Session
+    ) -> schemas.TokenData:
+    try:
+        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM])
+        email: str = payload.get("sub")
+        user = db.query(User).filter(User.email == email).first()
+        if email is None:
+            raise credentials_exception
+        return user
+    except JWTError:
+        raise credentials_exception
+    
