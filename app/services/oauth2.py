@@ -52,3 +52,4 @@ def add_new_role_in_org(
     # enforcer = casbin.Enforcer("core/model.conf", adapter)
     # enforcer.add_role_for_user_in_domain(email, role, dom)
     # db.commit()  # Ensure changes are persisted
+    pass
