@@ -16,3 +16,21 @@ from app.services.hash import Hash
 auth_router = APIRouter(prefix='', tags=['Auth'])
 
 
+@auth_router.post("/login", response_model=LoginResponse)
+def login(user_data: LoginRequest, db: Session = Depends(get_db)):
+    try:
+        user_data.model_dump()
+        user_auth = authenticate(db, email=user_data.email, password=user_data.password)
+        if not user_auth:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        content = {
+            "message": "login successful",
+        }
+        response = JSONResponse(content=content)
+        access_token = create_access_token(user_auth.email)
+        response.set_cookie(key='authorization', value=access_token, samesite='none', secure=True)
+        return response
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+
