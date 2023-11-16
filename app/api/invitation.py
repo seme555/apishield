@@ -16,3 +16,21 @@ from app.models import User
 from core.logger import logger
 from app.worker.celery import send_email_task
 
+
+invitation_router = APIRouter(prefix='/invitation', tags=['Invitation'])
+invitation_crud = CRUDBase(model=models.Invitation)
+
+
+@invitation_router.get('')
+def get_invitations(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user_authorization)
+) -> List[schemas.Invitation]:
+    db_invitations = db.query(models.Invitation)
+    return db_invitations
+
+
+@invitation_router.post('/invite')
+def invite(
+    background_tasks: BackgroundTasks,
+    invitation_data: schemas.InvitationCreateRequest,
