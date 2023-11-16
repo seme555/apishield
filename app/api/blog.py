@@ -16,3 +16,9 @@ blog_crud = CRUDBase(model=models.Blog)
 @blog_router.post('', response_model=schemas.BlogDetails)
 def create_blog(
     new_blog: schemas.BlogCreate,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    new_blog.model_dump()
+    blog = blog_crud.create(db=db, obj_in=new_blog)
+    return blog
