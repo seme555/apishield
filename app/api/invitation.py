@@ -34,3 +34,21 @@ def get_invitations(
 def invite(
     background_tasks: BackgroundTasks,
     invitation_data: schemas.InvitationCreateRequest,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user_authorization)
+):
+    unique_token = generate_invitation_token(data=invitation_data)
+    created_by = db.query(User).filter(User.email == current_user.email).first()
+
+    new_invitation = schemas.InvitationCreate(
+        full_name=invitation_data.full_name,
+        email=invitation_data.email,
+        organization=invitation_data.organization,
+        organizational_role=invitation_data.organizational_role,
+        role=invitation_data.role,
+        unique_token=unique_token,
+        created_by_id=created_by.id
+    )
+
+    new_invitation.model_dump()
+    _ = invitation_crud.create(db=db, obj_in=new_invitation)
