@@ -52,3 +52,21 @@ def invite(
 
     new_invitation.model_dump()
     _ = invitation_crud.create(db=db, obj_in=new_invitation)
+
+    try:
+        send_email_task.delay(
+            subject=f'Invitation to Join {invitation_data.organization}',
+            email_to=invitation_data.email,
+            body={
+                "full_name": invitation_data.full_name,
+                "email": invitation_data.email,
+                "organization": invitation_data.organization,
+                "created_by_name": created_by.full_name,
+                "invitation_url": f"{settings.BASE_URL}/accept-invitation/{unique_token}"}
+        )
+    except Exception as e:
+        logger.info(f"Failed to send email. Reason: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send email")
+
+    return {'message': 'Invitation sent successfully'}
+
