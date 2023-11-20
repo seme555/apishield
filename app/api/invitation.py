@@ -70,3 +70,21 @@ def invite(
 
     return {'message': 'Invitation sent successfully'}
 
+
+@invitation_router.post("/accept/{token}")
+async def accept_invitation(
+    token: str,
+    db: Session = Depends(get_db)
+):
+    data = confirm_invitation_token(token=token)
+    invitation = db.query(models.Invitation).filter_by(unique_token=token).first()
+
+    if not data or not invitation or invitation.expires_at < datetime.now():
+        raise HTTPException(status_code=400, detail='Invalid or expired invitation link')
+
+    # Redirect to the signup page with pre-filled information (data)
+    # return RedirectResponse(url=f"/user?email={invitation.email}&full_name={invitation.full_name}&organization_name={invitation.organization}&organizational_role='user'")
+    return data
+
+
+@invitation_router.get("/resend/{email}")
