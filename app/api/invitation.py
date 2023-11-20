@@ -88,3 +88,21 @@ async def accept_invitation(
 
 
 @invitation_router.get("/resend/{email}")
+async def resend_invitation(
+    background_tasks: BackgroundTasks,
+    email: str,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    invitation = db.query(models.Invitation).filter_by(email=email).first()
+
+    if not invitation:
+        raise HTTPException(status_code=400, detail='No existing invitation found for this email.')
+
+    created_by = db.query(User).filter(User.email==current_user.email).first()
+
+    data_to_create_unique_token = schemas.InvitationCreateRequest(
+        full_name=invitation.full_name,
+        email=invitation.email,
+        organization=invitation.organization,
+        organizational_role=invitation.organizational_role,
