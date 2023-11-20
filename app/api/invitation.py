@@ -106,3 +106,21 @@ async def resend_invitation(
         email=invitation.email,
         organization=invitation.organization,
         organizational_role=invitation.organizational_role,
+        role=invitation.role
+    )
+    unique_token = generate_invitation_token(data=data_to_create_unique_token)
+
+    invitation.unique_token = unique_token
+    invitation.resent_count += 1
+    _ = invitation_crud.update(db=db, obj_in=invitation)
+
+    send_email_task.delay(
+        subject=f'Invitation to Join {invitation.organization}',
+        email_to=invitation.email,
+        body={
+            "full_name": invitation.full_name,
+            "email": invitation.email,
+            "organization": invitation.organization,
+            "created_by_name": created_by.full_name,
+            "invitation_url": f"{settings.BASE_URL}/accept-invitation/{unique_token}"
+        }
