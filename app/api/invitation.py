@@ -124,3 +124,6 @@ async def resend_invitation(
             "created_by_name": created_by.full_name,
             "invitation_url": f"{settings.BASE_URL}/accept-invitation/{unique_token}"
         }
+    )
+
+    return {'message': 'Invitation resent successfully'}
