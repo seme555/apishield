@@ -16,3 +16,13 @@ async def send_email_asynchronous():
     )
     return "Success"
 
+
+@mail_router.get("/backgroundtasks")
+def send_email_backgroundtasks(background_tasks: BackgroundTasks):
+    send_email_background(
+        background_tasks=background_tasks,
+        subject="Invitation to Join Our Company X",
+        email_to="demo@apishield.dev",
+        body={"title": "Invitation", "name": "Dear Mr. X"},
+    )
+    return "Success"
