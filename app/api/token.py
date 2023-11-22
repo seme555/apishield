@@ -34,3 +34,5 @@ def get_token(form_data: OAuth2ClientCredentialsRequestForm = Depends()):
         return JSONResponse(
             status_code=status.HTTP_200_OK, content=jsonable_encoder(response)
         )
+    else:
+        raise HTTPException(status_code=403, detail="Invalid client credentials")
