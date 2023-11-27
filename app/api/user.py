@@ -34,3 +34,21 @@ def create_user(data: schemas.UserCreateRequest, db: Session = Depends(get_db)):
     )
     if existing_user:
         raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
+        )
+
+    user = schemas.UserCreate(
+        full_name=data.full_name,
+        email=invitation.email,
+        organization_name=invitation.organization,
+        organizational_role=invitation.organizational_role,
+        password=get_password_hash(data.password),
+        role=invitation.role,
+        invited_by_id=invitation.created_by_id,
+    )
+    user.model_dump()
+    user_dict = user_crud.create(db=db, obj_in=user)
+
+    # Add role to the new user
+    add_new_role_in_org(user.email, invitation.role, invitation.organization, db)
+
