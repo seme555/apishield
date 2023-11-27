@@ -52,3 +52,10 @@ def create_user(data: schemas.UserCreateRequest, db: Session = Depends(get_db)):
     # Add role to the new user
     add_new_role_in_org(user.email, invitation.role, invitation.organization, db)
 
+    return user_dict
+
+
+@user_router.get("")
+def get_users(db: Session = Depends(get_db)) -> List[schemas.UserList]:
+    db_users = db.query(models.User)
+    return db_users
