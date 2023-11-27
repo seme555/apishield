@@ -16,3 +16,7 @@ def hello_world():
 
 router.include_router(user_router)
 router.include_router(auth_router)
+router.include_router(blog_router)
+router.include_router(token_router)
+router.include_router(mail_router)
+router.include_router(invitation_router)
