@@ -16,3 +16,21 @@ def test_login_logout_successful(client, test_db):
         v2=test_user.organization_name
     )
 
+    # Action: Make a request to the login endpoint
+    response = client.post(
+        "api/login",
+        json={"email": test_user.email, 'password': 'password'}
+    )
+
+    # Assertions
+    assert response.status_code == 200
+    assert response.json()["message"] == "login successful"
+    assert "authorization" in response.cookies
+
+    logout_response = client.post("api/logout")
+
+    # Assertions
+    assert logout_response.status_code == 200
+    assert logout_response.json()["message"] == "logout successful"
+    assert "authorization" not in logout_response.cookies
+
