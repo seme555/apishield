@@ -34,3 +34,21 @@ def test_login_logout_successful(client, test_db):
     assert logout_response.json()["message"] == "logout successful"
     assert "authorization" not in logout_response.cookies
 
+
+def test_login_with_invalid_credentials_raises_error(client):
+    # Action: Make a request to the login endpoint
+    response = client.post(
+        "api/login",
+        json={'email': 'unknown@test.com', 'password': 'wrong_password'}
+    )
+
+    # Action & Assertion: Invalid password
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Incorrect email or password"
+    assert "authorization" not in response.cookies
+
+
+def test_oauth_login_successful(client, test_db):
+    # Setup 1: Create a test user
+    test_user = UserFactory(session=test_db)
+    
