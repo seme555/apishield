@@ -52,3 +52,21 @@ def test_oauth_login_successful(client, test_db):
     # Setup 1: Create a test user
     test_user = UserFactory(session=test_db)
     
+    logger.info(f'\n\n\n\n test_user: {test_user.email} \n\n\n')
+
+    # Setup 2: Define role permission for the user
+    _ = CasbinRuleFactory(
+        v0=test_user.email,
+        v1=test_user.role,
+        v2=test_user.organization_name
+    )
+
+    # Action: Make a request to the oauth-login endpoint
+    response = client.post(
+        "api/oauth-login",
+        data={'username': test_user.email, 'password': 'password'}
+    )
+
+    # Assertions
+    assert response.status_code == 200
+    assert "access_token" in response.json()
