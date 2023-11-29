@@ -88,3 +88,21 @@ def test_logout(client):
     response = client.post("api/logout")
 
     # Assertions
+    assert response.status_code == 200
+    assert response.json()["message"] == "logout successful"
+    assert "authorization" not in response.cookies
+
+
+# .... More Testing .......
+# !!!!!!!!!!!!!!!!!!!!!!!!!
+
+# Parameterized Testing for Input Variations
+@pytest.mark.parametrize("email, password, status_code, detail", [
+    ("valid@test.com", "wrongpassword", 400, "Incorrect email or password"),  # Incorrect email or password
+    ("not-an-email", "password", 422, None),  # Assuming 422 Unprocessable Entity for invalid email format
+    ("", "password", 422, None),  # Empty email
+    ("valid@test.com", "", 400, None),  # Empty password
+    (None, "password", 422, None),  # Missing email
+    ("valid@test.com", None, 422, None),  # Missing password
+])
+def test_login_various_inputs(client, email, password, status_code, detail):
