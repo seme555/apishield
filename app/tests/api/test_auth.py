@@ -70,3 +70,21 @@ def test_oauth_login_successful(client, test_db):
     # Assertions
     assert response.status_code == 200
     assert "access_token" in response.json()
+    assert response.json()["token_type"] == "bearer"
+
+
+def test_oauth_login_invalid_credentials_raises_error(client):
+    # Action & Assertion: Invalid email
+    response = client.post(
+        "api/oauth-login",
+        data={"username": "unknown@test.com", 'password': 'any'}
+    )
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Invalid Credentials"
+
+
+def test_logout(client):
+    # Action: Make a request to the logout endpoint
+    response = client.post("api/logout")
+
+    # Assertions
