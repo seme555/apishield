@@ -106,3 +106,21 @@ def test_logout(client):
     ("valid@test.com", None, 422, None),  # Missing password
 ])
 def test_login_various_inputs(client, email, password, status_code, detail):
+    """
+    TestCase 1: Incorrect email or password
+    TestCase 2: Assuming 422 Unprocessable Entity for invalid email format
+    TestCase 3: Missing email
+    TestCase 4: Missing password
+    """
+    response = client.post(
+        "api/login",
+        json={"email": email, "password": password}
+    )
+    assert response.status_code == status_code
+    if detail:
+        assert response.json()["detail"] == detail
+
+
+# Comprehensive Error Handling
+def test_login_nonexistent_user(client):
+    response = client.post("api/login", json={"email": "nonexistent@test.com", 'password': 'password'})
