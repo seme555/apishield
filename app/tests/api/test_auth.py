@@ -124,3 +124,15 @@ def test_login_various_inputs(client, email, password, status_code, detail):
 # Comprehensive Error Handling
 def test_login_nonexistent_user(client):
     response = client.post("api/login", json={"email": "nonexistent@test.com", 'password': 'password'})
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Incorrect email or password"
+
+
+# Security Tests (SQL Injection)
+@pytest.mark.parametrize("email, password", [
+    ("'; DROP TABLE users; --", "password"),  # SQL Injection
+    ("valid@test.com", "' OR '1'='1"),  # SQL Injection attempt in password
+])
+def test_login_security_vulnerabilities(client, email, password):
+    response = client.post("api/login", json={"email": email, "password": password})
+    assert response.status_code in [400, 422]
