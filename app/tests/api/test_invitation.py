@@ -16,3 +16,21 @@ def test_invite_sends_email_successfully(client, mocker):
         return_value="unique_token_123"
     )
 
+    # Mocking the email sending function to prevent actual email dispatch
+    mock_send_email = mocker.patch(
+        'app.api.invitation.send_email_background',
+        return_value=None
+    )
+
+    # Execute the api call
+    response = client.post("api/invitation/invite", json=invitation_data)
+
+    # Assertions
+    assert response.status_code == 200
+    assert response.json() == {'message': 'Invitation sent successfully'}
+
+    # Verify the mock was called as expected
+    mock_send_email.assert_called_once()
+    mock_send_email.assert_called_with(
+        background_tasks=mock.ANY,
+        subject=f'Invitation to Join {invitation_data["organization"]}',
