@@ -52,3 +52,21 @@ def test_invite_sends_email_successfully(client, mocker):
     ("role")
 ])
 def test_invite_missing_required_fields(client, missing_field):
+    """
+    Ensure the API returns a 422 error for missing required fields in invitation data.
+    Each iteration tests a different required field missing from the request.
+    """
+
+    dummy_invitation_data = invitation_data.copy()
+
+    # Remove the field being tested in this iteration
+    dummy_invitation_data.pop(missing_field)
+
+    response = client.post("api/invitation/invite", json=dummy_invitation_data)
+
+    assert response.status_code == 422, f"Failed when {missing_field} is missing"
+
+    # Ensure the response details contain information about the missing field
+    errors = response.json().get('detail', [])
+    assert any(missing_field in error.get("loc", []) for error in errors), f"Missing error details for {missing_field}"
+
