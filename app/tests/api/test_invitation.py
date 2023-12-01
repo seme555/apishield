@@ -34,3 +34,21 @@ def test_invite_sends_email_successfully(client, mocker):
     mock_send_email.assert_called_with(
         background_tasks=mock.ANY,
         subject=f'Invitation to Join {invitation_data["organization"]}',
+        email_to=invitation_data["email"],
+        body={
+            "full_name": invitation_data["full_name"],
+            "email": invitation_data["email"],
+            "organization": invitation_data["organization"],
+            "created_by_name": "test user full name",
+            "invitation_url": mock.ANY
+        }
+    )
+
+
+@pytest.mark.parametrize("missing_field", [
+    ("email"),
+    ("organization"),
+    ("organizational_role"),
+    ("role")
+])
+def test_invite_missing_required_fields(client, missing_field):
