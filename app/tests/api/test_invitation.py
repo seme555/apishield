@@ -88,3 +88,17 @@ def test_invite_email_send_failure(client, mocker, caplog):
     mock_send_email = mocker.patch(
         'app.api.invitation.send_email_background',
         side_effect=Exception("Email Service Down")
+    )
+
+    # Execute the api call
+    response = client.post("api/invitation/invite", json=invitation_data)
+
+    # Assertions
+    assert response.status_code == 500
+    assert 'Failed to send email' in response.json().get('detail', '')
+
+    # Assert that an error was logged
+    assert "Email Service Down" in caplog.text
+
+    # Verify the mock was called to send email
+    mock_send_email.assert_called_once()
