@@ -16,3 +16,21 @@ engine = create_engine(settings.TEST_DATABASE_URL)
 
 TestingSessionLocal = sessionmaker(
     autocommit=False, autoflush=False, bind=engine
+)
+Base.metadata.create_all(bind=engine, checkfirst=True)
+
+db = TestingSessionLocal()
+
+
+def get_current_user_authorization_override():
+    mock_user = schemas.TokenData(
+        email='testuser@example.com',
+        full_name='test user full name',
+        organization_name='test',
+        role='admin'
+    )
+    return mock_user
+
+
+@pytest.fixture
+def test_db():
