@@ -70,3 +70,21 @@ def test_invite_missing_required_fields(client, missing_field):
     errors = response.json().get('detail', [])
     assert any(missing_field in error.get("loc", []) for error in errors), f"Missing error details for {missing_field}"
 
+
+def test_invite_email_send_failure(client, mocker, caplog):
+    """Ensure the API handles email send failures gracefully."""
+
+    # Mocking a token generation function
+    mocker.patch(
+        'app.utils.invitation.generate_invitation_token',
+        return_value="unique_token_123"
+    )
+    mocker.patch(
+        'app.db.crud.CRUDBase.create',
+        return_value=mock.MagicMock()
+    )  # Assume creation is successful
+
+    # Mock send_email_background to raise an exception
+    mock_send_email = mocker.patch(
+        'app.api.invitation.send_email_background',
+        side_effect=Exception("Email Service Down")
