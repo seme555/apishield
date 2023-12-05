@@ -52,3 +52,9 @@ def client(test_db):
         return test_db
 
     app.dependency_overrides[get_db] = get_test_db
+    app.dependency_overrides[get_current_user_authorization] = get_current_user_authorization_override
+
+    with TestClient(app) as test_client:
+        push_data_into_test_db(test_db)
+        yield test_client
+    app.dependency_overrides.clear()
