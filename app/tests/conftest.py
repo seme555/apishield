@@ -34,3 +34,21 @@ def get_current_user_authorization_override():
 
 @pytest.fixture
 def test_db():
+    yield TestingSessionLocal()
+    for table in reversed(Base.metadata.sorted_tables):
+        with engine.connect() as conn:
+            trans = conn.begin()
+            try:
+                conn.execute(table.delete())
+                trans.commit()
+            except:
+                trans.rollback()
+                raise
+
+
+@pytest.fixture()
+def client(test_db):
+    def get_test_db():
+        return test_db
+
+    app.dependency_overrides[get_db] = get_test_db
