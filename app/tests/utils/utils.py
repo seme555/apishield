@@ -34,3 +34,5 @@ def push_data_into_test_db(db):
     json_file_path = os.path.join(script_dir, 'data.json')
     with open(json_file_path, "r") as f:
         db_data = json.loads(f.read())
+    
+    _ = push_user_data(db=db, db_data=db_data)
