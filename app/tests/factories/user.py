@@ -34,3 +34,11 @@ class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
         else:
             # If no password was provided, use 'password' and hash it.
             self.password = get_password_hash("password")
+    
+    @classmethod
+    def create(cls, **kwargs):
+        session = kwargs.pop('session', None)
+        if session is None:
+            raise ValueError("Session is required to create a UserFactory instance.")
+        cls._meta.sqlalchemy_session = session
+        return super().create(**kwargs)
