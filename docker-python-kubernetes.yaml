@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apishield
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: fastapi
+  template:
+    metadata:
+      labels:
+        service: fastapi
+    spec:
+      containers:
+       - name: fastapi-service
+         image: seme555/apishield
