@@ -1,4 +1,4 @@
-# ApiShield â€” FastAPI Backend Starter
+# ApiShield — FastAPI Backend Starter
 
 A professional, scalable, and production-ready template for backend applications built with FastAPI. This repository is designed to simplify development, ensure maintainability, and provide robust testing capabilities, making it an ideal starting point for your next project.
 
