@@ -34,3 +34,21 @@ spec:
             value: JWT_SECRET_KEY_HERE
           - name: ROLLBAR_ACCESS_TOKEN
             value: ROLLBAR_ACCESS_TOKEN_HERE
+          - name: BUCKET_NAME
+            value: BUCKET_NAME
+          - name: OAUTH_CLIENT_ID
+            value: CLIENT_ID
+          - name: OAUTH_CLIENT_SECRET
+            value: OAUTH_CLIENT_SECRET
+          - name: MAIL_USERNAME
+            value: norval.hahn60@ethereal.email
+          - name: MAIL_PASSWORD
+            value: NupfGHXtsUdgx36VuK
+          - name: MAIL_FROM
+            value: norval.hahn60@ethereal.email
+          - name: MAIL_PORT
+            value: "587"
+          - name: MAIL_SERVER
+            value: smtp.ethereal.email
+          - name: MAIL_FROM_NAME
+            value: Norval Hahn
