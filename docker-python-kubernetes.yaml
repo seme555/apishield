@@ -52,3 +52,21 @@ spec:
             value: smtp.ethereal.email
           - name: MAIL_FROM_NAME
             value: Norval Hahn
+          - name: INVITATION_URL_SECRET_KEY
+            value: INVITATION_URL_SECRET_KEY_HERE
+          - name: INVITATION_URL_SECURITY_PASSWORD_SALT
+            value: INVITATION_URL_SECURITY_PASSWORD_SALT_HERE
+          - name: INVITATION_URL_MAX_AGE
+            value: "172800"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-entrypoint
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    service: fastapi
+  ports:
+  - port: 5000
