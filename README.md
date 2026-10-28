@@ -1,5 +1,7 @@
 # ApiShield — FastAPI Backend Starter
 
+![CI](https://github.com/seme555/apishield/actions/workflows/ci.yml/badge.svg)
+
 A professional, scalable, and production-ready template for backend applications built with FastAPI. This repository is designed to simplify development, ensure maintainability, and provide robust testing capabilities, making it an ideal starting point for your next project.
 
 ## Key Features and Technologies
@@ -86,11 +88,13 @@ Access the application at `http://localhost:8000`.
 
 ## Testing
 
-Run tests using Pytest:
+Run tests using Pytest (requires Docker Compose services):
 
 ```bash
 make test
 ```
+
+Pull requests also run a lightweight GitHub Actions check that validates `docker-compose.yml` configuration.
 
 ## API Documentation
 
